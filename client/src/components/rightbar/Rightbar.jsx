@@ -1,7 +1,7 @@
 import "./rightbar.css";
 
 const Rightbar = () => {
-  return <h2>Rightbar</h2>;
+  return <div className="rightbar"></div>;
 };
 
 export default Rightbar;

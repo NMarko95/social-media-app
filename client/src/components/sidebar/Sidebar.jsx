@@ -1,7 +1,13 @@
 import "./sidebar.css";
 
 const Sidebar = () => {
-  return <h2>Sidebar</h2>;
+  return (
+    <div className="sidebar">
+      <div className="sidebar-wrapper">
+        <ul className="sidebar-list">{/* lista ikona*/}</ul>
+      </div>
+    </div>
+  );
 };
 
 export default Sidebar;
