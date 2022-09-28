@@ -8,6 +8,8 @@ const Post = ({ post }) => {
   const [like, setLike] = useState(post.like);
   const [isLiked, setIsLiked] = useState(false);
 
+  const pf = process.env.REACT_APP_PUBLIC_FOLDER;
+
   const getUser = (id, isUsername) => {
     const user = Users.find((user) => user.id === id);
     return isUsername ? user.username : user.profilePicture;
@@ -37,7 +39,7 @@ const Post = ({ post }) => {
         </div>
         <div className="post-center">
           <span className="post-text">{post?.desc}</span>
-          <img src={post.photo} className="post-image" alt="" />
+          <img src={pf + post.photo} className="post-image" alt="" />
         </div>
         <div className="post-bottom">
           <div className="post-bottom-left">
