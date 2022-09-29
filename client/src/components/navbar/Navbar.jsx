@@ -3,12 +3,15 @@ import SearchIcon from "@mui/icons-material/Search";
 import PersonIcon from "@mui/icons-material/Person";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MessageIcon from "@mui/icons-material/Message";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
     <div className="navbar-container">
       <div className="navbar-left">
-        <span className="logo">SocialMedia</span>
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <span className="logo">SocialMedia</span>
+        </Link>
       </div>
       <div className="navbar-center">
         <div className="searchbar">

@@ -1,45 +1,55 @@
 import "./post.css";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import { Users } from "../../data";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { format } from "timeago.js";
+import { Link } from "react-router-dom";
 
 const Post = ({ post }) => {
-  const [like, setLike] = useState(post.like);
+  const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
-
-  const pf = process.env.REACT_APP_PUBLIC_FOLDER;
-
-  const getUser = (id, isUsername) => {
-    const user = Users.find((user) => user.id === id);
-    return isUsername ? user.username : user.profilePicture;
-  };
+  const [user, setUser] = useState({});
 
   const handleLike = () => {
     setLike((like) => (isLiked ? like - 1 : like + 1));
     setIsLiked(!isLiked);
   };
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data } = await axios.get(
+        `http://localhost:8800/api/users?userId=${post.userId}`
+      );
+      //console.log(data);
+      setUser(data);
+    };
+    fetchUser();
+  }, [post.userId]);
+
   return (
     <div className="post">
       <div className="post-wrapper">
         <div className="post-top">
           <div className="post-top-left">
-            <img
-              src={getUser(post.userId, false)}
-              className="post-profile-image"
-              alt=""
-            />
-            <span className="post-username">{getUser(post.userId, true)}</span>
-            <span className="post-date">{post.date}</span>
+            <Link to={`profile/${user.username}`}>
+              <img
+                src={user.profilePicture || "/assets/avatar.jpg"}
+                className="post-profile-image"
+                alt=""
+              />
+            </Link>
+
+            <span className="post-username">{user.username}</span>
+            <span className="post-date">{format(post.createdAt)}</span>
           </div>
           <div className="post-top-right">
             <MoreVertIcon />
           </div>
         </div>
         <div className="post-center">
-          <span className="post-text">{post?.desc}</span>
-          <img src={pf + post.photo} className="post-image" alt="" />
+          <span className="post-text">{post.desc || ""}</span>
+          <img src={post.image || ""} className="post-image" alt="" />
         </div>
         <div className="post-bottom">
           <div className="post-bottom-left">
