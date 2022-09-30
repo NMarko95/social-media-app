@@ -1,5 +1,6 @@
 import "./register.css";
 import { useRef } from "react";
+import axios from "axios";
 
 const Register = () => {
   const emailRef = useRef();
@@ -7,7 +8,7 @@ const Register = () => {
   const usernameRef = useRef();
   const confirmRef = useRef();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
@@ -15,6 +16,19 @@ const Register = () => {
     const confirm = confirmRef.current.value;
     if (password !== confirm) {
       console.log("Passwords do not match!");
+      return;
+    }
+    const user = {
+      username,
+      email,
+      password,
+    };
+    console.log(user);
+    try {
+      await axios.post("http://localhost:8800/api/auth/register", user);
+      window.location.replace("/login");
+    } catch (error) {
+      console.log(error);
     }
   };
 

@@ -4,8 +4,12 @@ import PersonIcon from "@mui/icons-material/Person";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MessageIcon from "@mui/icons-material/Message";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const Navbar = () => {
+  const { user } = useContext(AuthContext);
+
   return (
     <div className="navbar-container">
       <div className="navbar-left">
@@ -38,12 +42,14 @@ const Navbar = () => {
           </div>
         </div>
         <div className="navbar-profile">
-          <span className="profile-name">Natasa</span>
-          <img
-            src="/assets/person/1.jpeg"
-            alt="pimg"
-            className="navbar-image"
-          />
+          <span className="profile-name">{user.username}</span>
+          <Link to={`/profile/${user.username}`}>
+            <img
+              src={user.profilePicture || "/assets/avatar.jpg"}
+              alt=""
+              className="navbar-image"
+            />
+          </Link>
         </div>
       </div>
     </div>

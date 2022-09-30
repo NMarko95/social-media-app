@@ -5,13 +5,23 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { format } from "timeago.js";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const Post = ({ post }) => {
   const [like, setLike] = useState(post.likes.length);
-  const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState({});
+  const { user: currentUser } = useContext(AuthContext);
+  const [isLiked, setIsLiked] = useState(post.likes.includes(currentUser._id));
 
   const handleLike = () => {
+    try {
+      axios.put(`http://localhost:8800/api/posts/${post._id}/like`, {
+        userId: currentUser._id,
+      });
+    } catch (error) {
+      console.log(error);
+    }
     setLike((like) => (isLiked ? like - 1 : like + 1));
     setIsLiked(!isLiked);
   };
@@ -32,7 +42,7 @@ const Post = ({ post }) => {
       <div className="post-wrapper">
         <div className="post-top">
           <div className="post-top-left">
-            <Link to={`profile/${user.username}`}>
+            <Link to={`/profile/${user.username}`}>
               <img
                 src={user.profilePicture || "/assets/avatar.jpg"}
                 className="post-profile-image"
