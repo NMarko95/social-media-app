@@ -3,6 +3,7 @@ import { useRef, useContext } from "react";
 import { loginCall } from "../apiCalls";
 import { AuthContext } from "../../context/AuthContext";
 import CircularProgress from "@mui/material/CircularProgress";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const emailRef = useRef();
@@ -18,8 +19,6 @@ const Login = () => {
     //console.log(passwordRef.current.value);
     loginCall({ email, password }, dispatch);
   };
-
-  console.log(user);
 
   return (
     <div className="login">
@@ -52,9 +51,11 @@ const Login = () => {
               {isFetching ? <CircularProgress size="18px" /> : "Sign in"}
             </button>
             <span className="login-forget">Forgot password?</span>
-            <button disabled={isFetching} className="login-register-button">
-              {isFetching ? <CircularProgress /> : "Create new account"}
-            </button>
+            <Link to="/register">
+              <button disabled={isFetching} className="login-register-button">
+                {isFetching ? <CircularProgress /> : "Create new account"}
+              </button>
+            </Link>
           </form>
         </div>
       </div>

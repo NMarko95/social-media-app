@@ -4,15 +4,19 @@ import Feed from "../../components/feed/Feed";
 import Navbar from "../../components/navbar/Navbar";
 import Rightbar from "../../components/rightbar/Rightbar";
 import Sidebar from "../../components/sidebar/Sidebar";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const Home = () => {
+  const { user } = useContext(AuthContext);
+
   return (
     <>
       <Navbar />
       <div className="home-container">
         <Sidebar />
-        <Feed />
-        <Rightbar profile={false} />
+        <Feed username={user.username} />
+        <Rightbar user={user} profile={false} />
       </div>
     </>
   );

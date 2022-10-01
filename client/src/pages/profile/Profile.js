@@ -52,7 +52,7 @@ const Profile = () => {
           </div>
           <div className="profile-right-bottom">
             <Feed username={user.username} />
-            <Rightbar user={user} />
+            <Rightbar user={user} profile={true} />
           </div>
         </div>
       </div>

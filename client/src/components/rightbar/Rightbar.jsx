@@ -1,12 +1,36 @@
 import "./rightbar.css";
-import { Users } from "../../data";
 import Online from "../online/Online";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { Link } from "react-router-dom";
 
-const Rightbar = ({ user }) => {
+const Rightbar = ({ user, profile }) => {
+  const [friends, setFriends] = useState([]);
+
+  const { user: loggedUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    const fetchFriends = async () => {
+      try {
+        if (user._id !== undefined) {
+          const { data } = await axios.get(
+            `http://localhost:8800/api/users/friends/${user._id}`
+          );
+          setFriends(data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchFriends();
+  }, [loggedUser._id, user]);
+
   return (
     <div className="rightbar">
       <div className="rightbar-wrapper">
-        {!user ? (
+        {!profile ? (
           <>
             <div className="birthday-container">
               <img src="assets/gift.png" className="birthday-image" alt="" />
@@ -17,9 +41,10 @@ const Rightbar = ({ user }) => {
             </div>
             <h4 className="rightbar-title">Online friends</h4>
             <ul className="rightbar-friend-list">
-              {Users.map((user) => {
-                return <Online key={user._id} user={user} />;
-              })}
+              {friends.length !== 0 &&
+                friends.map((friend) => {
+                  return <Online key={friend._id} user={friend} />;
+                })}
             </ul>
           </>
         ) : (
@@ -39,22 +64,24 @@ const Rightbar = ({ user }) => {
             </div>
             <h4 className="rightbar-title">User friends</h4>
             <div className="rightbar-followings">
-              <div className="rightbar-following">
-                <img className="rightbar-following-image" src="" alt="" />
-                <span className="rightbar-following-name">Natasa Nikolic</span>
-              </div>
-              <div className="rightbar-following">
-                <img className="rightbar-following-image" src="" alt="" />
-                <span className="rightbar-following-name">Marko Nikolic</span>
-              </div>
-              <div className="rightbar-following">
-                <img className="rightbar-following-image" src="" alt="" />
-                <span className="rightbar-following-name">Andjela Nikolic</span>
-              </div>
-              <div className="rightbar-following">
-                <img className="rightbar-following-image" src="" alt="" />
-                <span className="rightbar-following-name">Ivan Nikolic</span>
-              </div>
+              {friends.length !== 0 &&
+                friends.map((friend) => {
+                  const { _id, username, profilePicture } = friend;
+                  return (
+                    <div key={_id} className="rightbar-following">
+                      <Link to={`/profile/${username}`}>
+                        <img
+                          className="rightbar-following-image"
+                          src={profilePicture || "/assets/avatar.jpg"}
+                          alt=""
+                        />
+                      </Link>
+                      <span className="rightbar-following-name">
+                        {username}
+                      </span>
+                    </div>
+                  );
+                })}
             </div>
           </>
         )}

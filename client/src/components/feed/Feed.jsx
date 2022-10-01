@@ -18,7 +18,10 @@ const Feed = ({ username }) => {
             `http://localhost:8800/api/posts/timeline/${user._id}`
           );
       //console.log(data);
-      setPosts(data);
+      const sorted = data.sort((p1, p2) => {
+        return new Date(p2.createdAt) - new Date(p1.createdAt);
+      });
+      setPosts(sorted);
     };
     fetchPosts();
   }, [username, user._id]);
@@ -26,7 +29,9 @@ const Feed = ({ username }) => {
   return (
     <div className="feed">
       <div className="feed-wrapper">
-        <Share />
+        {username === user.username && (
+          <Share setPosts={setPosts} posts={posts} />
+        )}
         {posts.length !== 0 &&
           posts.map((post) => {
             return <Post key={post._id} post={post} />;

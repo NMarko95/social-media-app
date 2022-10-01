@@ -1,6 +1,7 @@
 import "./register.css";
 import { useRef } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const emailRef = useRef();
@@ -75,7 +76,11 @@ const Register = () => {
             <button type="submit" className="register-button">
               Sign up
             </button>
-            <button className="register-login-button">Log into account</button>
+            <Link to="/login">
+              <button className="register-login-button">
+                Log into account
+              </button>
+            </Link>
           </form>
         </div>
       </div>
