@@ -5,14 +5,14 @@ import "./feed.css";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 
-const Feed = ({ username }) => {
+const Feed = ({ username, profile }) => {
   const { user } = useContext(AuthContext);
 
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const { data } = username
+      const { data } = profile
         ? await axios.get(`http://localhost:8800/api/posts/profile/${username}`)
         : await axios.get(
             `http://localhost:8800/api/posts/timeline/${user._id}`
@@ -24,7 +24,7 @@ const Feed = ({ username }) => {
       setPosts(sorted);
     };
     fetchPosts();
-  }, [username, user._id]);
+  }, [profile, username, user._id]);
 
   return (
     <div className="feed">

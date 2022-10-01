@@ -15,7 +15,7 @@ const Home = () => {
       <Navbar />
       <div className="home-container">
         <Sidebar />
-        <Feed username={user.username} />
+        <Feed username={user.username} profile={false} />
         <Rightbar user={user} profile={false} />
       </div>
     </>

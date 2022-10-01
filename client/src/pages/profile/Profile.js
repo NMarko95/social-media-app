@@ -51,8 +51,8 @@ const Profile = () => {
             </div>
           </div>
           <div className="profile-right-bottom">
-            <Feed username={user.username} />
-            <Rightbar user={user} profile={true} />
+            {user?.username && <Feed username={user.username} profile={true} />}
+            {user?.username && <Rightbar user={user} profile={true} />}
           </div>
         </div>
       </div>

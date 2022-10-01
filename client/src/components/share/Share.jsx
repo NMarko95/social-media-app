@@ -8,6 +8,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { useRef } from "react";
 import { useState } from "react";
 import axios from "axios";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 const Share = ({ posts, setPosts }) => {
   const { user } = useContext(AuthContext);
@@ -50,6 +51,7 @@ const Share = ({ posts, setPosts }) => {
       await axios.post("http://localhost:8800/api/posts", newPost);
       const newPosts = [...posts, { ...newPost, likes: [] }];
       setPosts(newPosts);
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -71,6 +73,15 @@ const Share = ({ posts, setPosts }) => {
           />
         </div>
         <hr className="share-hr" />
+        {selectedImage && (
+          <div className="share-image-container">
+            <img src={selectedImage} alt="" className="share-image" />
+            <CancelIcon
+              className="share-cancel-image"
+              onClick={() => setSelectedImage(null)}
+            />
+          </div>
+        )}
         <form className="share-bottom">
           <div className="share-options">
             <label htmlFor="file" className="share-option">

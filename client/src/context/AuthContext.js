@@ -10,7 +10,7 @@ const INITIAL_STATE = {
     profilePicture: "",
     coverPicture: "",
     followers: [],
-    following: [],
+    following: ["6329a763e1b99f7275c95694", "6329a75be1b99f7275c95692"],
     isAdmin: false,
     createdAt: "2022-09-20T08:49:54.031+00:00",
     updatedAt: "2022-09-20T13:17:15.069+00:00",
