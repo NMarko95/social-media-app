@@ -3,22 +3,32 @@
     height: 100vh;
     background-color: #f0f2f5;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.register-wrapper{
-    width: 70%;
-    height: 70%;
+.register-text{
+    width: 50%;
     display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.register-left, .register-right{
-    flex: 1;
+.register-wrapper{
+    width: 90%;
+    height: 60%;
+    display: flex;
+    margin-top: 20px;
+}
+
+.register-left{
+    flex: 1.5;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
+
 
 .register-logo{
     font-size: 50px;
@@ -71,7 +81,7 @@
 
 .register-login-button{
     height: 50px;
-    width: 70%;
+    width: 100%;
     align-self: center;
     border-radius: 10px;
     border: none;
@@ -79,5 +89,42 @@
     color: #fff;
     font-size: 20px;
     font-weight: 500;
+    cursor: pointer;
+}
+
+.profile-picture-container, .cover-picture-container{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.register-container-label{
+    display: flex;
+    align-items: center;
+}
+
+.register-container-text{
+    font-size: 16px;
+    font-weight: 500;
+    margin-right: 10px;
+}
+
+.register-container-icon{
+    color: #175eee;
+    cursor: pointer;
+}
+
+.register-container-picture{
+    height: 80%;
+    width: 90%;
+    object-fit: cover;
+}
+
+.remove-icon{
+    position: absolute;
+    top: 0;
+    right: 10px;
     cursor: pointer;
 }

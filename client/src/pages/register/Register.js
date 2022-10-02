@@ -1,13 +1,42 @@
 import "./register.css";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
+import ClearIcon from "@mui/icons-material/Clear";
 
 const Register = () => {
+  const [coverPicture, setCoverPicture] = useState(null);
+  const [profilePicture, setProfilePicture] = useState(null);
+
   const emailRef = useRef();
   const passwordRef = useRef();
   const usernameRef = useRef();
   const confirmRef = useRef();
+
+  const readFileDataAsBase64 = (e) => {
+    const currentFile = e.target.files[0];
+
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(currentFile);
+
+      reader.onload = (event) => {
+        resolve(event.target.result);
+      };
+
+      reader.onerror = (err) => {
+        reject(err);
+      };
+    });
+  };
+
+  const handleUploadFile = (e, profile) => {
+    readFileDataAsBase64(e).then((data) => {
+      if (profile) setProfilePicture(data);
+      else setCoverPicture(data);
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,8 +52,11 @@ const Register = () => {
       username,
       email,
       password,
+      profilePicture: profilePicture || "",
+      coverPicture: coverPicture || "",
+      desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga voluptate ullam obcaecati non provident dolorum.",
+      city: "Nis",
     };
-    console.log(user);
     try {
       await axios.post("http://localhost:8800/api/auth/register", user);
       window.location.replace("/login");
@@ -35,15 +67,15 @@ const Register = () => {
 
   return (
     <div className="register">
+      <div className="register-text">
+        <h3 className="register-logo">SocialMedia</h3>
+        <p className="register-desc">
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga
+          voluptate ullam obcaecati non provident dolorum.
+        </p>
+      </div>
       <div className="register-wrapper">
         <div className="register-left">
-          <h3 className="register-logo">SocialMedia</h3>
-          <p className="register-desc">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga
-            voluptate ullam obcaecati non provident dolorum.
-          </p>
-        </div>
-        <div className="register-right">
           <form className="register-box" onSubmit={handleSubmit}>
             <input
               required
@@ -82,6 +114,60 @@ const Register = () => {
               </button>
             </Link>
           </form>
+        </div>
+        <div className="profile-picture-container">
+          <label htmlFor="profile-picture" className="register-container-label">
+            <span className="register-container-text">Profile picture</span>
+            <AddAPhotoIcon className="register-container-icon" />
+            <input
+              type="file"
+              id="profile-picture"
+              className="profile-picture-input"
+              accept={".png, .jpg, .peg"}
+              style={{ display: "none" }}
+              onChange={(e) => handleUploadFile(e, true)}
+            />
+          </label>
+          {profilePicture && (
+            <>
+              <img
+                src={profilePicture}
+                alt=""
+                className="register-container-picture"
+              />
+              <ClearIcon
+                className="remove-icon"
+                onClick={() => setProfilePicture(null)}
+              />
+            </>
+          )}
+        </div>
+        <div className="cover-picture-container">
+          <label htmlFor="cover-picture" className="register-container-label">
+            <span className="register-container-text">Cover picture</span>
+            <AddAPhotoIcon className="register-container-icon" />
+            <input
+              type="file"
+              id="cover-picture"
+              className="profile-picture-input"
+              style={{ display: "none" }}
+              accept={".png, .jpg, .peg"}
+              onChange={(e) => handleUploadFile(e, false)}
+            />
+          </label>
+          {coverPicture && (
+            <>
+              <img
+                src={coverPicture}
+                alt=""
+                className="register-container-picture"
+              />
+              <ClearIcon
+                className="remove-icon"
+                onClick={() => setCoverPicture(null)}
+              />
+            </>
+          )}
         </div>
       </div>
     </div>
