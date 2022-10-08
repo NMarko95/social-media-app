@@ -8,11 +8,15 @@ import {
 import Profile from "./pages/profile/Profile";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "./context/AuthContext";
 
 function App() {
-  const { user } = useContext(AuthContext);
+  const { user, socket } = useContext(AuthContext);
+
+  useEffect(() => {
+    user && socket?.emit("newUser", user.username);
+  }, [user, socket]);
 
   return (
     <Router>

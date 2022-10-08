@@ -9,7 +9,7 @@ const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
 
-  const { user, isFetching, error, dispatch } = useContext(AuthContext);
+  const { isFetching, dispatch } = useContext(AuthContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();

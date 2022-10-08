@@ -11,13 +11,17 @@ import { AuthContext } from "../../context/AuthContext";
 const Post = ({ post }) => {
   const [like, setLike] = useState(post.likes.length);
   const [user, setUser] = useState({});
-  const { user: currentUser } = useContext(AuthContext);
+  const { user: currentUser, socket } = useContext(AuthContext);
   const [isLiked, setIsLiked] = useState(post.likes.includes(currentUser._id));
 
   const handleLike = () => {
     try {
       axios.put(`http://localhost:8800/api/posts/${post._id}/like`, {
         userId: currentUser._id,
+      });
+      socket.emit("sendNotification", {
+        senderName: currentUser.username,
+        receiverName: user.username,
       });
     } catch (error) {
       console.log(error);
