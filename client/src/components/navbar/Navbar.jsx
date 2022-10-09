@@ -13,15 +13,18 @@ const Navbar = () => {
   const { user, dispatch, socket } = useContext(AuthContext);
 
   const [isHovered, setIsHovered] = useState(false);
-  const [notifications, setNotitifications] = useState([]);
+  const [notificationHover, setNotificationHover] = useState(false);
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    socket?.on("getNotification", (senderName) => {
-      setNotitifications((prev) => [...prev, senderName]);
+    socket?.on("getNotification", (notification) => {
+      setNotifications((prev) => [...prev, notification]);
     });
   }, [socket]);
 
-  console.log(notifications);
+  const handleNotificationHover = () => {
+    setNotificationHover(!notificationHover);
+  };
 
   return (
     <div className="navbar-container">
@@ -38,18 +41,51 @@ const Navbar = () => {
       </div>
       <div className="navbar-right">
         <div className="navbar-icons">
-          <div className="navbar-icon-item">
+          {/*<div className="navbar-icon-item">
             <PersonIcon />
-            <span className="navbar-badge">1</span>
+            <span className="navbar-badge"></span>
           </div>
           <div className="navbar-icon-item">
             <MessageIcon />
-            <span className="navbar-badge">2</span>
-          </div>
-          <div className="navbar-icon-item">
+            <span className="navbar-badge"></span>
+          </div>*/}
+          <div className="navbar-icon-item" onClick={handleNotificationHover}>
             <NotificationsIcon />
-            <span className="navbar-badge">1</span>
+            {notifications.length !== 0 && (
+              <span className="navbar-badge">{notifications.length}</span>
+            )}
           </div>
+          {notificationHover && (
+            <div
+              className={`navbar-list ${notifications.length === 0 && "empty"}`}
+            >
+              {notifications.length === 0 ? (
+                <div className="navbar-list-item">
+                  There are no new notifications.
+                </div>
+              ) : (
+                <>
+                  {notifications.map((notification, index) => {
+                    const { senderName, type } = notification;
+                    return (
+                      <div className="navbar-list-item" key={index}>
+                        <p className="navbar-list-item-text">
+                          <Link
+                            className="navbar-list-link"
+                            to={`/profile/${senderName}`}
+                          >
+                            {senderName}
+                          </Link>{" "}
+                          has {type ? "disliked" : "liked"} your{" "}
+                          <button className="modal-post-btn">post</button>.
+                        </p>
+                      </div>
+                    );
+                  })}
+                </>
+              )}
+            </div>
+          )}
         </div>
         <div className="navbar-profile">
           <span className="profile-name">{user.username}</span>

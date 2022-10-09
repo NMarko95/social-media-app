@@ -55,10 +55,13 @@ io.on("connection", (socket) => {
     console.log(`${username} has logged in.`);
   });
 
-  socket.on("sendNotification", ({ senderName, receiverName }) => {
+  socket.on("sendNotification", ({ senderName, receiverName, type }) => {
     const receiver = getUser(receiverName);
     console.log(receiver);
-    io.to(receiver.socketId).emit("getNotification", senderName);
+    io.to(receiver.socketId).emit("getNotification", {
+      senderName,
+      type,
+    });
   });
 
   socket.on("disconnect", () => {

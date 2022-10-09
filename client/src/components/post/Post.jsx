@@ -22,6 +22,7 @@ const Post = ({ post }) => {
       socket.emit("sendNotification", {
         senderName: currentUser.username,
         receiverName: user.username,
+        type: isLiked,
       });
     } catch (error) {
       console.log(error);
