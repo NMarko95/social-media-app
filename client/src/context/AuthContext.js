@@ -12,20 +12,17 @@ export const AuthContext = createContext(INITIAL_STATE);
 
 export const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE);
-  const [socket, setSocket] = useState(null);
-
-  useEffect(() => {
-    setSocket(io("http://localhost:5000"));
-  }, []);
+  const [onlineUsers, setOnlineUsers] = useState([]);
 
   return (
     <AuthContext.Provider
       value={{
         user: state.user,
+        onlineUsers,
+        setOnlineUsers,
         isFetching: state.isFetching,
         error: state.error,
         dispatch,
-        socket,
       }}
     >
       {children}

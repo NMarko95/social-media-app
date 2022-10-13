@@ -17,5 +17,4 @@ export const loginCall = async (userCredentials, dispatch) => {
 export const logoutCall = (dispatch) => {
   dispatch({ type: "SIGN_OUT" });
   localStorage.removeItem("user");
-  window.location.replace("/login");
 };

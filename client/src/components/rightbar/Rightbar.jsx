@@ -9,7 +9,9 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
 const Rightbar = ({ user, profile }) => {
-  const { user: loggedUser, dispatch } = useContext(AuthContext);
+  const { user: loggedUser, dispatch, socket } = useContext(AuthContext);
+
+  const [onlineUsers, setOnlineUsers] = useState([]);
   const [friends, setFriends] = useState([]);
   const [followed, setFollowed] = useState(
     loggedUser.following.includes(user._id)
@@ -67,9 +69,9 @@ const Rightbar = ({ user, profile }) => {
             </div>
             <h4 className="rightbar-title">Online friends</h4>
             <ul className="rightbar-friend-list">
-              {friends.length !== 0 &&
-                friends.map((friend) => {
-                  return <Online key={friend._id} user={friend} />;
+              {onlineUsers.length !== 0 &&
+                onlineUsers.map((friend) => {
+                  return <Online key={friend.user._id} user={friend.user} />;
                 })}
             </ul>
           </>

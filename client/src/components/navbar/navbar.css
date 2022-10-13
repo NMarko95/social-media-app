@@ -67,6 +67,8 @@
     cursor: pointer;
     position: relative;
     margin-top: 5px;
+    text-decoration: none;
+    color: #fff;
 }
 
 .navbar-badge{

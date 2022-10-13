@@ -10,13 +10,10 @@ import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "./context/AuthContext";
+import Messenger from "./pages/messenger/Messenger";
 
 function App() {
-  const { user, socket } = useContext(AuthContext);
-
-  useEffect(() => {
-    user && socket?.emit("newUser", user.username);
-  }, [user, socket]);
+  const { user } = useContext(AuthContext);
 
   return (
     <Router>
@@ -28,6 +25,7 @@ function App() {
           path="/register"
         />
         <Route element={<Profile />} path="/profile/:username" />
+        <Route element={<Messenger />} path="/messenger" />
       </Routes>
     </Router>
   );

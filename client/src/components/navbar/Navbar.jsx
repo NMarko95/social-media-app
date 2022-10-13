@@ -8,6 +8,7 @@ import { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { logoutCall } from "../../pages/apiCalls";
 import { useState } from "react";
+import { io } from "socket.io-client";
 
 const Navbar = () => {
   const { user, dispatch, socket } = useContext(AuthContext);
@@ -44,11 +45,11 @@ const Navbar = () => {
           {/*<div className="navbar-icon-item">
             <PersonIcon />
             <span className="navbar-badge"></span>
-          </div>
-          <div className="navbar-icon-item">
-            <MessageIcon />
-            <span className="navbar-badge"></span>
           </div>*/}
+          <Link to="/messenger" className="navbar-icon-item">
+            <MessageIcon />
+            {/*<span className="navbar-badge"></span>*/}
+          </Link>
           <div className="navbar-icon-item" onClick={handleNotificationHover}>
             <NotificationsIcon />
             {notifications.length !== 0 && (
@@ -106,7 +107,9 @@ const Navbar = () => {
               </Link>
               <button
                 className="signout-btn"
-                onClick={() => logoutCall(dispatch)}
+                onClick={() => {
+                  logoutCall(dispatch);
+                }}
               >
                 <span className="profile-settings-text">Sign out</span>
               </button>
